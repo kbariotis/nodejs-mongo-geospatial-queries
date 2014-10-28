@@ -10,7 +10,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var City = require('./app/models/city');
 
-mongoose.connect('mongodb://localhost:27017/geospatial'); // connect to our database
+var mongoUri = process.env.MONGOLAB_URI ||
+               process.env.MONGOHQ_URL ||
+               'mongodb://localhost:27017/geospatial';
+mongoose.connect(mongoUri); // connect to our database
 
 app.set('views', './public');
 app.set('view engine', 'jade');
