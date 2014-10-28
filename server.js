@@ -98,6 +98,8 @@ router.post('/api/cities/available', function (req, res) {
   });
 });
 
+app.use('/', router);
+
 // START THE SERVER
 // =============================================================================
 app.listen(port);
