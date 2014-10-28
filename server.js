@@ -39,15 +39,11 @@ router.route('/api/cities')
 
   .post(function (req, res) {
 
-    var city = new City(); 		// create a new instance of the Bear model
-    city.name = req.body.name;  // set the bears name (comes from the request)
-    city.geo = [req.body.lng, req.body.lat];  // set the bears name (comes from the request)
-
     var distance = 1000 / 6371;
     var query = City.findOne(
       {
         'geo': {
-          $near: [city.geo[1], city.geo[0]],
+          $near: [req.body.lat, req.body.lng],
           $maxDistance: distance
         }
       }
@@ -59,8 +55,11 @@ router.route('/api/cities')
       }
 
       if (!city) {
-        // save the bear and check for errors
-        city.save(function (err) {
+        var cityModel = new City(); 		// create a new instance of the Bear model
+        cityModel.name = req.body.name;  // set the bears name (comes from the request)
+        cityModel.geo = [req.body.lat, req.body.lng];  // set the bears name (comes from the request)
+
+        cityModel.save(function (err) {
           if (err)
             res.send(err);
 

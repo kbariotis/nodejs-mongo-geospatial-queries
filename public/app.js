@@ -73,24 +73,23 @@ Available.prototype._initMap = function () {
 Available.prototype._changeMapLocation = function () {
   var place = this.$autocompleteObject.getPlace();
 
+  $('button[type=submit]').removeClass('btn-success');
+
   $.post('/api/cities/available', {
       lat: place.geometry.location.B,
       lng: place.geometry.location.k
     }
   )
     .done(function (d) {
-      console.log(d);
-      if(!$.isEmptyObject(d)) {
+      if (!$.isEmptyObject(d)) {
         $('.results').text('Found your city : ' + d.name);
         $('button[type=submit]').attr('disabled', true);
       } else {
-        $('.results').text('You city is available. Register Now! : ');
+        $('.results').text('You city is available. Register Now!');
         $('button[type=submit]').attr('disabled', false);
       }
     })
-    .fail(function (d) {
-      console.log(d);
-    });
+    .fail(function (d) {});
 
   if (place.geometry) {
     this.$mapContainer.panTo(place.geometry.location);
@@ -141,6 +140,8 @@ Available.prototype._submitForm = function () {
     return false;
   }
 
+  $('button[type=submit]').attr('disabled', true);
+  $('button[type=submit]').text('Wait...');
   $.post('/api/cities', {
       name: this.$cityCanonicalNameField.val(),
       lat: this.$cityLatField.val(),
@@ -148,11 +149,11 @@ Available.prototype._submitForm = function () {
     }
   )
     .done(function (d) {
-      console.log(d);
+      $('button[type=submit]').attr('disabled', false);
+      $('button[type=submit]').text('Register');
+      $('button[type=submit]').addClass('btn-success');
     })
-    .fail(function (d) {
-      console.log(d);
-    });
+    .fail(function (d) {});
 
   return false;
 };
