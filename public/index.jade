@@ -1,0 +1,18 @@
+html
+  head
+    title Geospatial Example
+    link(href='/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+  body
+    .container
+      h1.results Check this out
+      form.form-horizontal.search-city-form(action="/available", method="post", role="form")
+        input.form-control#city(name="city",placeholder="Type your city")
+        #map-canvas(style="height:400px")
+        input.hidden(name="cityCanonicalName",type="hidden")
+        input.hidden(name="cityLat",type="hidden")
+        input.hidden(name="cityLng",type="hidden")
+        input.hidden(name="cityCountryCode",type="hidden")
+        button.btn.btn-success.btn-lg.btn-block(type="submit",disabled) Register
+    script(src="http://maps.googleapis.com/maps/api/js?libraries=places")
+    script(src="/components/jquery/dist/jquery.min.js")
+    script(src="/app.js")
