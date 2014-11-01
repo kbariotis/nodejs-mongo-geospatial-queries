@@ -2,17 +2,21 @@ html
   head
     title Geospatial Example
     link(href='/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    meta(name="viewport", content="width=device-width, initial-scale=1")
   body
     .container
       h1.results Check this out
       form.form-horizontal.search-city-form(action="/available", method="post", role="form")
-        input.form-control#city(name="city",placeholder="Type your city")
-        #map-canvas(style="height:400px")
+        .form-group
+          input.form-control#city(name="city",placeholder="Type your city")
+        .form-group
+          #map-canvas(style="height:400px")
         input.hidden(name="cityCanonicalName",type="hidden")
         input.hidden(name="cityLat",type="hidden")
         input.hidden(name="cityLng",type="hidden")
         input.hidden(name="cityCountryCode",type="hidden")
-        button.btn.btn-primary.btn-lg.btn-block(type="submit",disabled) Register
+        .form-group
+          button.btn.btn-primary.btn-lg.btn-block(type="submit",disabled) Register
     script(src="https://maps.googleapis.com/maps/api/js?libraries=places")
     script(src="/components/jquery/dist/jquery.min.js")
     script(src="/app.js")
