@@ -9,7 +9,6 @@ var Available = function () {
   this.$submitBtn = null;
 
   this.$cityCanonicalNameField = null;
-  this.$cityCountryCodeField = null;
   this.$cityLatField = null;
   this.$cityLngField = null;
 };
@@ -22,7 +21,6 @@ Available.prototype.init = function () {
   this.$searchCityInput = $('#city');
 
   this.$cityCanonicalNameField = $('input[name=cityCanonicalName]');
-  this.$cityCountryCodeField = $('input[name=cityCountryCode]');
   this.$cityLatField = $('input[name=cityLat]');
   this.$cityLngField = $('input[name=cityLng]');
 
@@ -51,8 +49,7 @@ Available.prototype.init = function () {
 Available.prototype._initAutocomplete = function () {
 
   var options = {
-    types: ['(cities)'],
-    componentRestrictions: {country: 'gr'}
+    types: ['(cities)']
   };
   this.$autocompleteObject = new google.maps.places.Autocomplete(this.$searchCityInput[0], options);
   /* Pass native DOM element */
@@ -118,12 +115,10 @@ Available.prototype._changeMapLocation = function () {
  */
 Available.prototype._populateHiddenForm = function (place) {
 
+  console.log(place);
+
   if (place.address_components && place.address_components[3] != null) {
     this.$cityCanonicalNameField.val(place.address_components[3].long_name);
-  }
-
-  if (place.address_components && place.address_components[6] != null) {
-    this.$cityCountryCodeField.val(place.address_components[3].short_name);
   }
 
   if (place.geometry && place.geometry.location) {
@@ -139,7 +134,7 @@ Available.prototype._submitForm = function () {
    * Validate hidden inputs
    */
   if (
-    !this.$cityCanonicalNameField.val() || !this.$cityCountryCodeField.val() || !this.$cityLatField.val() || !this.$cityLngField.val()
+    !this.$cityCanonicalNameField.val() || !this.$cityLatField.val() || !this.$cityLngField.val()
   ) {
     this.$searchCityInput.parent().parent().addClass('has-error');
     return false;
