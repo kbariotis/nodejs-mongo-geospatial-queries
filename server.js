@@ -1,11 +1,5 @@
-// server.js
-
-// BASE SETUP
-// =============================================================================
-
-// call the packages we need
-var express = require('express'); 		// call express
-var app = express(); 				// define our app using express
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var City = require('./app/models/city');
@@ -13,7 +7,7 @@ var City = require('./app/models/city');
 var mongoUri = process.env.MONGOLAB_URI ||
                process.env.MONGOHQ_URL ||
                'mongodb://localhost:27017/geospatial';
-mongoose.connect(mongoUri); // connect to our database
+mongoose.connect(mongoUri);
 
 app.set('views', './public');
 app.set('view engine', 'jade');
@@ -29,7 +23,7 @@ var port = process.env.PORT || 8080; 		// set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
-var router = express.Router(); 				// get an instance of the express Router
+var router = express.Router();
 
 router.get('/', function (req, res) {
   res.render('index', {title: 'Hey', message: 'Hello there!'});
@@ -55,9 +49,9 @@ router.route('/api/cities')
       }
 
       if (!city) {
-        var cityModel = new City(); 		// create a new instance of the Bear model
-        cityModel.name = req.body.name;  // set the bears name (comes from the request)
-        cityModel.geo = [req.body.lat, req.body.lng];  // set the bears name (comes from the request)
+        var cityModel = new City();
+        cityModel.name = req.body.name;
+        cityModel.geo = [req.body.lat, req.body.lng];
 
         cityModel.save(function (err) {
           if (err)
