@@ -6,6 +6,7 @@ var Available = function () {
   this.$searchCityForm = null;
   this.$searchCityInput = null;
   this.$autocompleteObject = null;
+  this.$submitBtn = null;
 
   this.$cityCanonicalNameField = null;
   this.$cityCountryCodeField = null;
@@ -24,6 +25,8 @@ Available.prototype.init = function () {
   this.$cityCountryCodeField = $('input[name=cityCountryCode]');
   this.$cityLatField = $('input[name=cityLat]');
   this.$cityLngField = $('input[name=cityLng]');
+
+  this.$submitBtn = $('button[type=submit]');
 
   this.$searchCityForm.on('keydown', function (event) {
     if (event.keyCode === 13) {
@@ -73,8 +76,10 @@ Available.prototype._initMap = function () {
 Available.prototype._changeMapLocation = function () {
   var place = this.$autocompleteObject.getPlace();
 
-  $('button[type=submit]').removeClass('btn-success');
+  this.$submitBtn.removeClass('btn-success');
+  this.$submitBtn.text('Register');
 
+  var that = this;
   $.post('/api/cities/available', {
       lat: place.geometry.location.B,
       lng: place.geometry.location.k
@@ -83,10 +88,10 @@ Available.prototype._changeMapLocation = function () {
     .done(function (d) {
       if (!$.isEmptyObject(d)) {
         $('.results').text('Found your city : ' + d.name);
-        $('button[type=submit]').attr('disabled', true);
+        that.$submitBtn.attr('disabled', true);
       } else {
         $('.results').text('You city is available. Register Now!');
-        $('button[type=submit]').attr('disabled', false);
+        that.$submitBtn.attr('disabled', false);
       }
     })
     .fail(function (d) {});
@@ -140,8 +145,10 @@ Available.prototype._submitForm = function () {
     return false;
   }
 
-  $('button[type=submit]').attr('disabled', true);
-  $('button[type=submit]').text('Wait...');
+  this.$submitBtn.attr('disabled', true);
+  this.$submitBtn.text('Wait...');
+
+  var that = this;
   $.post('/api/cities', {
       name: this.$cityCanonicalNameField.val(),
       lat: this.$cityLatField.val(),
@@ -149,9 +156,9 @@ Available.prototype._submitForm = function () {
     }
   )
     .done(function (d) {
-      $('button[type=submit]').attr('disabled', false);
-      $('button[type=submit]').text('Register');
-      $('button[type=submit]').addClass('btn-success');
+      that.$submitBtn.attr('disabled', false);
+      that.$submitBtn.text('Done!');
+      that.$submitBtn.addClass('btn-success');
     })
     .fail(function (d) {});
 
