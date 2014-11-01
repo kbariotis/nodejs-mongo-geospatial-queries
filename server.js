@@ -33,16 +33,7 @@ router.route('/api/cities')
 
   .post(function (req, res) {
 
-    var distance = 1000 / 6371;
-    var query = City.findOne(
-      {
-        'geo': {
-          $near: [req.body.lat, req.body.lng],
-          $maxDistance: distance
-        }
-      }
-    );
-    query.exec(function (err, city) {
+    City.checkIfCityExists(req.body.lat, req.body.lng, function (err, city) {
       if (err) {
         console.log(err);
         throw err;
@@ -68,17 +59,7 @@ router.route('/api/cities')
   });
 
 router.post('/api/cities/available', function (req, res) {
-  var distance = 1000 / 6371;
-
-  var query = City.findOne(
-    {
-      'geo': {
-        $near: [req.body.lat, req.body.lng],
-        $maxDistance: distance
-      }
-    }
-  );
-  query.exec(function (err, city) {
+  City.checkIfCityExists(req.body.lat, req.body.lng, function (err, city) {
     if (err) {
       console.log(err);
       throw err;
